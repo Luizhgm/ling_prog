@@ -1,0 +1,15 @@
+<!doctype html>
+<title>Hello from Flask</title>
+  <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+  <h1>{{ tipo }}!!</h1>
+  <h1>Aqui é a lista de atividades {{ tipo }}</h1> 
+
+    <table>
+        
+    {% for key,value in content.items() %}
+        <tr>
+            <td><a href={{value}}>{{key}}</a></td>
+        </tr>
+        
+    {% endfor %}
+    </table>

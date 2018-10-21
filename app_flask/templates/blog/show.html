@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}Oportunidade: "{{ post['title'] }}"{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+
+    <label>Titulo</label>
+    <p class="body">{{ post['title']}}</p>
+      
+    
+    <label>Modalidade</label>
+    <p class="body">{{ post['type']}}</p>
+      
+    <label >Vagas</label>
+    <p class="body">{{ post['places']}}</p>
+    
+    <label >Bolsa</label>
+    <p class="body">{{ post['money']}}</p>
+
+    <label >houras</label>
+    <p class="body">{{ post['hours']}}</p>
+    
+    <label >Link</label>
+    <p class="body">{{ post['link'] }}</p>
+           
+    <label >Body</label>
+    <p class="body">{{ post['body'] }}</p>
+
+  <form method="post">
+    {% if g.user['options_id']==3  %}
+        <label for="mark">Tá pra mim</label>
+        <input type="checkbox" name="mark"/>
+        <input type="submit" value="enviar">
+    {% else  %}
+      <input type="submit" value="feito">
+    {% endif %}
+      
+  </form>
+  <hr>
+{% endblock %}

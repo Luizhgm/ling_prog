@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Nova Vaga{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="title">Titulo</label>
+    <input name="title" id="title" value="{{ request.form['title'] }}" required>
+
+    <label for="options">Modalidade</label>  
+    <select name="options" method="GET" action="{{ request.form['options'] }}">
+    {% for option in options %}
+        <option value="{{option[0]}}" SELECTED>{{option[1]}}</option>"
+    {% endfor %}
+    </select>
+      
+    <label for="places">Vagas</label>
+    <input name="places" id="places" value="{{ request.form['places'] }}" required>
+    
+    <label for="money">Bolsa</label>
+    <input name="money" id="money" value="{{ request.form['money'] }}" required>
+
+    <label for="hours">houras</label>
+    <input name="hours" id="hours" value="{{ request.form['hours'] }}" required>
+    
+    <label for="link">Link</label>
+    <textarea name="link" id="link">{{ request.form['link'] }}</textarea>
+      
+    <label for="body">Descrição</label>
+    <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
+      
+    <input type="submit" value="Save">
+  </form>
+{% endblock %}

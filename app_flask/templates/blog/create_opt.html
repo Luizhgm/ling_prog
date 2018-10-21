@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Novo tipo{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="type">Tipo</label>
+    <input name="type" id="type" value="{{ request.form['type'] }}" required>
+
+    <label for="link">Link</label>
+    <textarea name="link" id="link">{{ request.form['link'] }}</textarea>
+      
+    <input type="submit" value="Save">
+  </form>
+{% endblock %}

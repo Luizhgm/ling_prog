@@ -1,0 +1,21 @@
+<!doctype html>
+<title>Hello from Flask</title>
+  <link rel=stylesheet type=text/css1 href="{{ url_for('static', filename='style.css') }}">
+  <h1>Hello, {{ name }}!</h1>
+  <h1>Vamos escolher uma Atividade Extra para voce</h1> 
+
+<body>
+    <br><br>
+    <a href='/logout'>Logout</a>
+    <br><br><br>
+<form method="post">
+    <input type="submit" name="button" value="Iniciação Cientifica">
+    <br>
+    <input type="submit" name="button" value="Equipe de Competição">
+    <br>
+    <input type="submit" name="button" value="Extensão">
+    <br>
+    <input type="submit" name="button" value="Todas junto">
+    <br>
+</form>
+</body>
