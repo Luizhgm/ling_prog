@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}Pedidos{% endblock %}</h1>
+  <a class="action" href="{{ url_for('blog.index') }}">Sair</a>
+{% endblock %}
+{% block content %}
+<form method="post">
+    <article class="post">
+      <header>
+         <div class="header"> ---- {{ post['username'] }} ----</div>
+      </header> 
+         <div class="h1"> {{ post['name'] }} com o {{ post['email'] }} do centro {{ post['p.name'] }}</div>
+         {% if  post['activate']== 1 %}
+             <div class="h1">Do tipo  {{ post['type'] }}  com a conta no momento  Ativo </div>
+         {% else %}
+             <div class="h1">Do tipo  {{ post['type'] }}  com a conta no momento  NÃO ATIVO </div>
+         {% endif %}   
+                
+      
+   </article>
+  <input type="submit" name="ativar" value="ativar">
+    
+  <input type="submit" name="desativar" value="desativar">
+  </form>
+  
+{% endblock %}

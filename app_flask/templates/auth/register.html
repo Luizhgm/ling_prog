@@ -10,13 +10,18 @@
     <input name="username" id="username" required>
     <label for="password">Password</label>
     <input type="password" name="password" id="password" required>
-      
+    
+    <label for="CPF">CPF (somente numeros)</label>
+    <input name="CPF" id="CPF" required>
+    
     <label for="options">Modalidade</label>  
     <select name="options" method="GET" action="{{ request.form['options'] }}">
     {% for option in options %}
         <option value="{{option[0]}}" SELECTED>{{option[1]}}</option>"
     {% endfor %}
     </select>
+      
+    
       
     <input type="submit" value="Register">
   </form>

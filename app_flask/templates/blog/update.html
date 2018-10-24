@@ -14,6 +14,9 @@
     <label>Modalidade</label>
     <p class="body"> "{{ post['type']}}" </p>
       
+    <label>Local</label>
+    <p class="body"> "{{ post['name']}}" : "{{ post['adress']}}" </p>
+      
     <label for="places">Vagas</label>
     <input name="places" id="places" value="{{ request.form['places'] or post['places']}}" required>
     
@@ -30,10 +33,14 @@
       
     <label for="body">Body</label>
     <textarea name="body" id="body">{{ request.form['body'] or post['body'] }}</textarea>
-    <input type="submit" value="Save">
-  </form>
-  <hr>
-  <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
-    <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
-  </form>
+    {% if  g.user['activate']==True  %}
+        <input type="submit" value="Save"> 
+      </form>
+          <hr>
+          <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
+            <input class="danger" type="submit" value="Delete" onclick="return confirm('Are you sure?');">
+      </form>
+    {% else  %}
+          <input type="submit" value="Conta não ativa">
+    {% endif %}
 {% endblock %}

@@ -12,6 +12,10 @@
     <label>Modalidade</label>
     <p class="body">{{ post['type']}}</p>
       
+
+    <label>Local</label>
+    <p class="body"> "{{ post['name']}}" : "{{ post['adress']}}" </p>
+
     <label >Vagas</label>
     <p class="body">{{ post['places']}}</p>
     
@@ -29,10 +33,15 @@
 
   <form method="post">
     {% if g.user['options_id']==3  %}
-        <label for="mark">Tá pra mim</label>
-        <input type="checkbox" name="mark"/>
-        <input type="submit" value="enviar">
-    {% else  %}
+        {% if  g.user['activate']==True  %}
+            <label for="mark">Tá pra mim</label>
+            <input type="checkbox" name="mark"/>
+            <input type="submit" value="enviar">
+        {% else  %}
+          <input type="submit" value="Conta não ativa">
+
+        {% endif %}
+     {% else  %}
       <input type="submit" value="feito">
     {% endif %}
       

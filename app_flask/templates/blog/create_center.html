@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Novo centro{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="name">Nome do centro</label>
+    <input name="name" id="name" value="{{ request.form['name'] }}" required>
+      
+    <label for="address">Endereço</label>
+    <input name="address" id="address" value="{{ request.form['address'] }}" required>
+
+    <label for="about">Discorra</label>
+    <textarea name="about" id="about">{{ request.form['about'] }}</textarea>
+      {% if  g.user['activate']==True  %}
+            <input type="submit" value="Save">
+        {% else  %}
+          <input type="submit" value="Conta não ativa">
+
+        {% endif %}
+      
+  </form>
+{% endblock %}

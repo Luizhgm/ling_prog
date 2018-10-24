@@ -4,10 +4,15 @@
   <h1>{% block title %}Posts{% endblock %}</h1>
   {% if g.user %}
     {% if g.user['options_id']==2 %}
-    <a class="action" href="{{ url_for('blog.create') }}">New</a>
+        {% if  g.user['activate']==True  %}
+            <a class="action" href="{{ url_for('blog.create') }}">New</a>
+        {% else  %}
+            <a> CONTA INATIVA </a>
+        {% endif %}
     {% endif %}
       {% if g.user['options_id']==1 %}
-        <a class="action" href="{{ url_for('auth.register_conf') }}">Auth_register</a>
+        <a class="action" href="{{ url_for('auth.find_register') }}">Find_register</a>
+        <a class="action" href="{{ url_for('blog.create_center') }}">Novo Centro</a>
         <a class="action" href="{{ url_for('blog.create_opt') }}">New_option</a>
       {% endif %}
   {% endif %}

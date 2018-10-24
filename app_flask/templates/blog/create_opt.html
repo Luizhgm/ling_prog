@@ -12,6 +12,12 @@
     <label for="link">Link</label>
     <textarea name="link" id="link">{{ request.form['link'] }}</textarea>
       
-    <input type="submit" value="Save">
+    {% if  g.user['activate']==True  %}
+            <input type="submit" value="Save">
+        {% else  %}
+          <input type="submit" value="Conta não ativa">
+
+        {% endif %}
+      
   </form>
 {% endblock %}

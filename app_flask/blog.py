@@ -13,7 +13,7 @@ def index():
     db = get_db()
     posts = db.execute(
         'SELECT p.id, title, body, p.link, hours, places, created, author_id, username, type,money'
-        ' FROM post p JOIN user u ON p.author_id = u.id'
+        ' FROM post p JOIN account u ON p.author_id = u.id'
         ' JOIN options_post o ON p.options_id = o.id'
         ' ORDER BY created DESC'
     ).fetchall()
@@ -34,6 +34,8 @@ def create():
         link = request.form['link']
         places = request.form['places']
         tipo = request.form['options']
+        place_id = request.form['opt_place']
+        
         error = None
 
         if not title:
@@ -44,15 +46,16 @@ def create():
         else:
             
             db.execute(
-                'INSERT INTO post (title, body, author_id, money, hours, link, places, options_id)'
-                ' VALUES (?, ?, ?, ? ,? ,? ,?,?)',
-                (title, body, g.user['id'], money, hours, link, places, int(tipo))
+                'INSERT INTO post (title, body, author_id, money, hours, link, places, options_id,place_id)'
+                ' VALUES (?, ?, ?, ? ,? ,? ,?, ?, ?)',
+                (title, body, g.user['id'], money, hours, link, places, int(tipo), place_id)
             )
             db.commit()
             return redirect(url_for('blog.index'))
         
-    row = [(item[0],item[1]) for item in db.execute("SELECT id,type FROM options_post").fetchall()]
-    return render_template('blog/create.html', options=row)
+    opt_post = [(item[0],item[1]) for item in db.execute("SELECT id,type FROM options_post").fetchall()]
+    opt_plac = [(item[0],item[1]) for item in db.execute("SELECT id,name FROM places").fetchall()]
+    return render_template('blog/create.html', options1=opt_post, options2=opt_plac)
 
 @bp.route('/create_opt', methods=('GET', 'POST'))
 @login_required
@@ -71,7 +74,7 @@ def create_opt():
         else:
             db = get_db()
             db.execute(
-                'INSERT INTO options_post (type, link)'
+                'INSERT INTO options_post (type, about)'
                 ' VALUES (?, ?)',
                 (title, link)
             )
@@ -80,11 +83,45 @@ def create_opt():
 
     return render_template('blog/create_opt.html')
 
+@bp.route('/create_center', methods=('GET', 'POST'))
+@login_required
+def create_center():
+    if request.method == 'POST':
+        db = get_db()
+        name = request.form['name']
+        address = request.form['address']
+        
+        about = request.form['about']
+        
+        error = None
+
+        if db.execute(
+            'SELECT id FROM places WHERE name = ?', (name,)
+        ).fetchone() is not None:
+            error = 'User {} is already registered.'.format(name)
+            
+       
+        if error is not None:
+            flash(error)
+        else:
+            
+            db.execute(
+                'INSERT INTO places (name, adress, about)'
+                ' VALUES (?, ?, ?)',
+                (name, address, about)
+            )
+            db.commit()
+            return redirect(url_for('blog.index'))
+
+    return render_template('blog/create_center.html')
+
 def get_post(id, check_author=True):
     post = get_db().execute(
-        'SELECT p.id, title, body, p.link, hours, places, created, author_id, username, type,money'
-        ' FROM post p JOIN user u ON p.author_id = u.id'
+        'SELECT p.id, title, body, p.link, hours, places, created, author_id, username, type,money, l.name, l.adress'
+        ' FROM post p JOIN account u ON p.author_id = u.id'
+        ' JOIN user_infos i ON i.id = u.user_id'
         ' JOIN options_post o ON p.options_id = o.id'
+        ' JOIN places l ON p.place_id = l.id'
         ' WHERE p.id = ?',
         (id,)
     ).fetchone()
@@ -103,30 +140,33 @@ def update(id):
     post = get_post(id)
 
     if request.method == 'POST':
-        title = request.form['title']
-        body = request.form['body']
-        money = request.form['money']
-        hours = request.form['hours']
-        link = request.form['link']
-        places = request.form['places']
-        options_id  = request.form['options_id']
-        
-        error = None
-
-        if not title:
-            error = 'Title is required.'
-
-        if error is not None:
-            flash(error)
+        if g.user['activate']!=True:
+            flash('Nada mudou, pq vc é inativo!!')
+            pass
         else:
-            db = get_db()
-            db.execute(
-                'UPDATE post SET title = ?, body = ?, link = ?, hours = ?, places = ?, money=?, type = ?'
-                ' WHERE id = ?',
-                (title, body , link, hours, places, money,  options_id, id )
-            )
-            db.commit()
-            return redirect(url_for('blog.index'))
+            title = request.form['title']
+            body = request.form['body']
+            money = request.form['money']
+            hours = request.form['hours']
+            link = request.form['link']
+            places = request.form['places']
+
+            error = None
+
+            if not title:
+                error = 'Title is required.'
+
+            if error is not None:
+                flash(error)
+            else:
+                db = get_db()
+                db.execute(
+                    'UPDATE post SET title = ?, body = ?, link = ?, hours = ?, places = ?, money=?'
+                    ' WHERE id = ?',
+                    (title, body , link, hours, places, money, id )
+                )
+                db.commit()
+        return redirect(url_for('blog.index'))
 
     return render_template('blog/update.html', post=post)
 
@@ -138,8 +178,7 @@ def show(id):
     if request.method == 'POST':
         
         if request.form.get('mark'):
-            print("mEEE")
-            return redirect(url_for('blog.email'))
+            return redirect(url_for('blog.email', email = id))
         else:
             return redirect(url_for('blog.index'))
         
@@ -150,11 +189,17 @@ def show(id):
 @bp.route('/email', methods=('GET', 'POST'))
 @login_required
 def email():
+    idx = request.args['email']
     if request.method == 'POST':
         return redirect(url_for('blog.index'))
-        
     
-    return render_template('blog/email.html')
+    db = get_db()
+    email = db.execute('SELECT email'
+        ' FROM account u JOIN user_infos i ON i.id = u.user_id'
+        ' WHERE u.id = ?',
+        (idx,)
+    ).fetchone()
+    return render_template('blog/email.html', email= email['email'])
 
 @bp.route('/<int:id>/delete', methods=('POST',))
 @login_required

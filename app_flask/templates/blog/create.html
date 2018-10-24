@@ -11,10 +11,19 @@
 
     <label for="options">Modalidade</label>  
     <select name="options" method="GET" action="{{ request.form['options'] }}">
-    {% for option in options %}
+    {% for option in options1 %}
         <option value="{{option[0]}}" SELECTED>{{option[1]}}</option>"
     {% endfor %}
     </select>
+      
+    <label for="opt_place">Centros</label>  
+    <select name="opt_place" method="GET" action="{{ request.form['opt_place'] }}">
+    {% for opt in options2 %}
+        <option value="{{opt[0]}}" SELECTED>{{opt[1]}}</option>"
+    {% endfor %}
+    </select>
+      
+      
       
     <label for="places">Vagas</label>
     <input name="places" id="places" value="{{ request.form['places'] }}" required>
@@ -31,6 +40,13 @@
     <label for="body">Descrição</label>
     <textarea name="body" id="body">{{ request.form['body'] }}</textarea>
       
-    <input type="submit" value="Save">
+        {% if  g.user['activate']==True  %}
+            <input type="submit" value="Save">
+        {% else  %}
+          <input type="submit" value="Conta não ativa">
+
+        {% endif %}
+      
+    
   </form>
 {% endblock %}

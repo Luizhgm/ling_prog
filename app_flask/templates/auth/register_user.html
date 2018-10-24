@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register_user{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="name">Nome</label>
+    <input name="name" id="name" required>
+      
+    <label for="CPF">CPF (apenas numeros)</label>
+    <input name="CPF" id="CPF" required>
+      
+    <label for="email">email</label>
+    <input name="email" id="email">
+      
+    <label for="place">Centro</label>  
+    <select name="place" method="GET" action="{{ request.form['place'] }}">
+    {% for option_place in options_place %}
+        <option value="{{option_place[0]}}" SELECTED>{{option_place[1]}}</option>"
+    {% endfor %}
+    </select>
+      
+    <input type="submit" value="Register">
+  </form>
+{% endblock %}

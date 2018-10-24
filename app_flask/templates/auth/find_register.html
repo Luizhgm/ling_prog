@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}Pedidos{% endblock %}</h1>
+  <a class="action" href="{{ url_for('blog.index') }}">Sair</a>
+{% endblock %}
+{% block content %}
+<form method="post">
+  {% for post in options %}
+    <article class="post">
+      <header>
+        <div>
+            {% if  post['activate']== 1 %}
+                <div class="h1"> {{ post['username'] }} com a conta do tipo {{ post['type'] }} foi LIBERADA</div>
+            {% else %}
+                <div class="h1"> {{ post['username'] }} com a conta do tipo {{ post['type'] }} NÃO foi LIBERADA</div>
+            {% endif %} 
+                
+          </div>
+     </header>
+   </article>
+   {% endfor %}
+  <label for="username">Username</label>
+    <input name="username" id="username" value="{{ request.form['username'] }}" required>
+  <input type="submit" value="pegar">
+  </form>
+  
+{% endblock %}
