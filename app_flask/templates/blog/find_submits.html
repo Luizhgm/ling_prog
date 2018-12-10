@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block header %}
+  <h1>{% block title %}Pedidos{% endblock %}</h1>
+  <a class="action" href="{{ url_for('blog.index') }}">Sair</a>
+{% endblock %}
+{% block content %}
+<form method="post">
+  {% for post in options %}
+    <article class="post">
+      <header>
+        <div>
+            {% if  post['aprovado']== 1 %}
+                <div class="h1">{{ post['name'] }} com ID: {{ post['user_id'] }} e com o email {{ post['email'] }} foi SELECIONADO</div>
+            {% else %}
+                <div class="h1">{{ post['name'] }} com ID: {{ post['user_id'] }} e com o email {{ post['email'] }} NÃO foi SELECIONADO</div>
+            {% endif %} 
+                
+          </div>
+     </header>
+   </article>
+   {% endfor %}
+  <label for="user_id">user_id</label>
+    <input name="user_id" id="user_id" value="{{ request.form['user_id'] }}" required>
+  <input type="submit" value="pegar">
+  </form>
+  
+{% endblock %}

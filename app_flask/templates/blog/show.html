@@ -24,6 +24,9 @@
 
     <label >houras</label>
     <p class="body">{{ post['hours']}}</p>
+
+    <label >Fim do processo de seleção</label>
+    <p class="body">{{ post['end_created']}}</p>
     
     <label >Link</label>
     <p class="body">{{ post['link'] }}</p>
@@ -34,9 +37,13 @@
   <form method="post">
     {% if g.user['options_id']==3  %}
         {% if  g.user['activate']==True  %}
-            <label for="mark">Tá pra mim</label>
-            <input type="checkbox" name="mark"/>
-            <input type="submit" value="enviar">
+              {% if  in_day==True %}
+                    <label for="mark">Tá pra mim</label>
+                    <input type="checkbox" name="mark"/>
+                    <input type="submit" value="enviar">
+                {% else  %}
+                  <input type="submit" value="Inscrições finalizadas">
+                 {% endif %}
         {% else  %}
           <input type="submit" value="Conta não ativa">
 

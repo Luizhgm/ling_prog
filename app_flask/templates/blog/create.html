@@ -2,6 +2,7 @@
 
 {% block header %}
   <h1>{% block title %}Nova Vaga{% endblock %}</h1>
+<a class="action" href="{{ url_for('blog.index') }}">Sair</a>
 {% endblock %}
 
 {% block content %}
@@ -33,6 +34,9 @@
 
     <label for="hours">houras</label>
     <input name="hours" id="hours" value="{{ request.form['hours'] }}" required>
+    
+     <label for="dia">Fim do processo de seleção</label>
+    <input name="dia" id="dia" value="{{ request.form['dia'] }}" required>
     
     <label for="link">Link</label>
     <textarea name="link" id="link">{{ request.form['link'] }}</textarea>

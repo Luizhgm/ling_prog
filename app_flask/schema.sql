@@ -4,6 +4,7 @@ DROP TABLE IF EXISTS user_infos;
 DROP TABLE IF EXISTS account;
 DROP TABLE IF EXISTS post; 
 DROP TABLE IF EXISTS options_post;
+DROP TABLE IF EXISTS post_submit;
 
 CREATE TABLE options_user (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -34,9 +35,9 @@ CREATE TABLE account (
   username TEXT UNIQUE NOT NULL,
   password TEXT NOT NULL,
   options_id INTEGER NOT NULL,
-  activate Boolean NOT NULL DEFAULT FALSE,
+  activate BOOLEAN NOT NULL DEFAULT FALSE,
   
-  FOREIGN KEY (user_id) REFERENCES user_info (id)
+  FOREIGN KEY (user_id) REFERENCES user_info (id),
   FOREIGN KEY (options_id) REFERENCES options_user (id)
 );
 
@@ -53,6 +54,7 @@ CREATE TABLE post (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   author_id INTEGER NOT NULL,
   created TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  end_created DATE NOT NULL,
   title TEXT NOT NULL,
   options_id INTEGER NOT NULL,
   places INTEGER NOT NULL DEFAULT 1,
@@ -66,6 +68,18 @@ CREATE TABLE post (
   FOREIGN KEY (author_id) REFERENCES user_infos (id),
   FOREIGN KEY (options_id) REFERENCES options_post (id)
     
+);
+
+CREATE TABLE post_submit (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  post_id INTEGER NOT NULL,
+  aprovado BOOLEAN NOT NULL DEFAULT FALSE,
+  user_id INTEGER UNIQUE NOT NULL,
+  email TEXT,
+  body TEXT,
+  
+  FOREIGN KEY (user_id) REFERENCES user_infos (id),
+  FOREIGN KEY (post_id) REFERENCES post (id)
 );
 
 INSERT INTO places(name, adress ,about) VALUES ("NONE","NONE","para preenchimentos e não precisar preencher em lugar default");

@@ -26,6 +26,9 @@
     <label for="hours">houras</label>
     <input name="hours" id="hours" value="{{ request.form['hours'] or post['hours']}}" required>
     
+    <label for="dia">Fim do processo de seleção</label>
+    <input name="dia" id="dia" value="{{ request.form['dia'] or post['end_created']}}" required>
+      
     <label for="link">Link</label>
     <textarea name="link" id="link">{{ request.form['link'] or post["link"] }}</textarea>
      

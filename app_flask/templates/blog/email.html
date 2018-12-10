@@ -6,6 +6,8 @@
 
 {% block content %}
   <form method="post">
+    <label for="curriculo">curriculo</label>
+    <textarea name="curriculo" id="curriculo">{{ request.form['curriculo'] }}</textarea>
     <input type="submit" value="OK">
   </form>
 {% endblock %}

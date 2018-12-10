@@ -2,6 +2,7 @@
 
 {% block header %}
   <h1>{% block title %}Novo centro{% endblock %}</h1>
+    <a class="action" href="{{ url_for('blog.index') }}">Sair</a>
 {% endblock %}
 
 {% block content %}
